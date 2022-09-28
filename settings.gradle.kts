@@ -8,4 +8,4 @@
  */
 
 rootProject.name = "sedona-iceberg-bridge"
-include("app", "list", "utilities")
+include("example", "bridge")

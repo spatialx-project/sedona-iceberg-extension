@@ -3,3 +3,11 @@
 
 # Ignore Gradle build output directory
 build
+
+# IDEA
+/.idea
+*.iml
+
+settings.xml
+.classpath.txt
+.fullclasspath.txt
