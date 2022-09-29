@@ -21,7 +21,6 @@ package org.apache.spark.sql.iceberg
 
 import org.apache.spark.sql.catalyst.expressions.Expression
 import org.apache.spark.sql.catalyst.expressions.Literal
-import org.apache.spark.sql.catalyst.expressions.PredicateHelper
 import org.apache.spark.sql.catalyst.plans.logical.LogicalPlan
 import org.apache.spark.sql.catalyst.rules.Rule
 import org.apache.spark.sql.catalyst.util.ArrayData
@@ -35,7 +34,7 @@ import scala.util.Try
  * do not properly override foldable method so we have to performn constant folding manually in
  * this optimization pass.
  */
-object FoldSedonaExpressions extends Rule[LogicalPlan] with PredicateHelper {
+object FoldSedonaExpressions extends Rule[LogicalPlan] {
   override def apply(plan: LogicalPlan): LogicalPlan = plan transform {
     case q: LogicalPlan =>
       q.transformExpressionsDown {
@@ -46,7 +45,7 @@ object FoldSedonaExpressions extends Rule[LogicalPlan] with PredicateHelper {
 
   private def tryConstantFolding(expr: Expression): Expression = Try {
     expr.eval(null) match {
-      case data: ArrayData => Literal(data.array, ArrayType(ByteType))
+      case data: ArrayData => Literal(data, ArrayType(ByteType))
       case other: Any => Literal(other)
     }
   }.getOrElse(expr)

@@ -35,8 +35,8 @@ object GeometrySerializer {
    * @return Array of bites represents this geometry
    */
   def serialize(geometry: Geometry): Array[Byte] = {
-    // org.apache.spark.sql.iceberg.udt.GeometrySerializer.serialize(geometry).array.asInstanceOf[Array[Byte]]
-    val writer = new WKBWriter(2, 2, true)
+    // TODO: replace this with org.apache.spark.sql.iceberg.udt.GeometrySerializer.serializeArray
+    val writer = new WKBWriter(getDimension(geometry), 2, true)
     writer.write(geometry)
   }
 
@@ -48,5 +48,9 @@ object GeometrySerializer {
    */
   def deserialize(values: ArrayData): Geometry = {
     org.apache.spark.sql.iceberg.udt.GeometrySerializer.deserialize(values)
+  }
+
+  def getDimension(geometry: Geometry): Int = {
+    if (geometry.getCoordinate != null && !java.lang.Double.isNaN(geometry.getCoordinate.getZ)) 3 else 2
   }
 }

@@ -6,11 +6,6 @@ plugins {
     id("org.apache.iceberg.sedona.scala-application-conventions")
 }
 
-dependencies {
-    implementation("org.apache.commons:commons-text")
-    implementation(project(":bridge"))
-}
-
 application {
     // Define the main class for the application.
     mainClass.set("org.apache.iceberg.sedona.app.App")

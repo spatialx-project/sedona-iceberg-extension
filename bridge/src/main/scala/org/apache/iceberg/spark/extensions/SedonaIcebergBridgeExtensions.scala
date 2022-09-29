@@ -22,12 +22,18 @@ package org.apache.iceberg.spark.extensions
 import org.apache.sedona.sql.utils.SedonaSQLRegistrator
 import org.apache.spark.sql.SparkSessionExtensions
 import org.apache.spark.sql.iceberg.FoldSedonaExpressions
+import org.apache.spark.sql.iceberg.SedonaPredicatePushDown
 
+/**
+ * Sedona iceberg bridge extension initializes both the bridge itself and Apache Sedona extension,
+ * so user don't need to specify sedona extension class in `spark.sql.extensions` when creating spark session.
+ */
 class SedonaIcebergBridgeExtensions extends (SparkSessionExtensions => Unit)  {
   override def apply(extensions: SparkSessionExtensions): Unit = {
     extensions.injectOptimizerRule { _ => FoldSedonaExpressions }
     extensions.injectCheckRule(spark => {
       SedonaSQLRegistrator.registerAll(spark)
+      spark.experimental.extraOptimizations ++= Seq(SedonaPredicatePushDown)
       _ => ()
     })
   }
