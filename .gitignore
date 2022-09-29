@@ -11,3 +11,6 @@ build
 settings.xml
 .classpath.txt
 .fullclasspath.txt
+
+example/iceberg-warehouse
+example/spark-warehouse

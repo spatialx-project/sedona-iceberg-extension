@@ -17,21 +17,15 @@
  * under the License.
  */
 
-plugins {
-    id("org.apache.iceberg.sedona.common")
-    scala
-    application
-}
+package org.apache.spark.sql.sedona_sql.UDT
 
-val sparkVersion =
-    if (System.getProperty("sparkVersion") != null) System.getProperty("sparkVersion")
-    else System.getProperty("defaultSparkVersion")
+import org.apache.spark.sql.types.UDTRegistration
+import org.locationtech.jts.index.SpatialIndex
 
-dependencies {
-    compileOnly("org.apache.spark:spark-sql_2.12")
-}
-
-application {
-    // Define the main class for the application.
-    mainClass.set("org.apache.iceberg.sedona.app.App")
+object UdtRegistratorWrapper {
+  def registerAll(): Unit = {
+    // GeometryUDT was relocated to org.apache.spark.sql.iceberg.udt.GeometryUDT and will be
+    // registered by iceberg-spark-extensions, so we don't need to register it here.
+    UDTRegistration.register(classOf[SpatialIndex].getName, classOf[IndexUDT].getName)
+  }
 }

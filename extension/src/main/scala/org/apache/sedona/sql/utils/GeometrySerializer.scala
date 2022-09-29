@@ -17,21 +17,32 @@
  * under the License.
  */
 
-plugins {
-    id("org.apache.iceberg.sedona.common")
-    scala
-    application
-}
+package org.apache.sedona.sql.utils
 
-val sparkVersion =
-    if (System.getProperty("sparkVersion") != null) System.getProperty("sparkVersion")
-    else System.getProperty("defaultSparkVersion")
+import org.locationtech.jts.geom.Geometry
 
-dependencies {
-    compileOnly("org.apache.spark:spark-sql_2.12")
-}
+/**
+ * SerDe using the WKB reader and writer objects
+ */
+object GeometrySerializer {
 
-application {
-    // Define the main class for the application.
-    mainClass.set("org.apache.iceberg.sedona.app.App")
+  /**
+   * Given a geometry returns array of bytes
+   *
+   * @param geometry JTS geometry
+   * @return Array of bites represents this geometry
+   */
+  def serialize(geometry: Geometry): Array[Byte] = {
+    org.apache.spark.sql.iceberg.udt.GeometrySerializer.serialize(geometry)
+  }
+
+  /**
+   * Given ArrayData returns Geometry
+   *
+   * @param values ArrayData
+   * @return JTS geometry
+   */
+  def deserialize(values: Array[Byte]): Geometry = {
+    org.apache.spark.sql.iceberg.udt.GeometrySerializer.deserialize(values)
+  }
 }

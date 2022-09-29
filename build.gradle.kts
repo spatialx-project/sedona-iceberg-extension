@@ -17,21 +17,13 @@
  * under the License.
  */
 
-plugins {
-    id("org.apache.iceberg.sedona.common")
-    scala
-    application
+val projectVersion = getProjectVersionFromFile()
+
+allprojects {
+    group = "org.apache.iceberg"
+    version = projectVersion
 }
 
-val sparkVersion =
-    if (System.getProperty("sparkVersion") != null) System.getProperty("sparkVersion")
-    else System.getProperty("defaultSparkVersion")
-
-dependencies {
-    compileOnly("org.apache.spark:spark-sql_2.12")
-}
-
-application {
-    // Define the main class for the application.
-    mainClass.set("org.apache.iceberg.sedona.app.App")
+fun getProjectVersionFromFile(): String {
+    return file("version.txt").readText(Charsets.UTF_8).trim()
 }
