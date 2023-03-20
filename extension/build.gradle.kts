@@ -31,6 +31,10 @@ configurations {
     }
 }
 
+repositories {
+    mavenLocal()
+}
+
 val sparkVersion =
     if (System.getProperty("sparkVersion") != null) System.getProperty("sparkVersion")
     else System.getProperty("defaultSparkVersion")
