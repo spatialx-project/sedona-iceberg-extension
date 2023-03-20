@@ -18,7 +18,6 @@ jobs:
         with:
           java-version: '8'
           distribution: 'temurin'
-          cache: maven
       - name: Cache Gradle
         uses: actions/cache@v3
         with:
