@@ -1,0 +1,36 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [main]
+
+env:
+  GRADLE_USER_HOME: ${{ github.workspace }}/.gradle
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '8'
+      - name: Cache Gradle
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: ${{ runner.os }}-gradle-
+      - name: Build
+        run: |
+          ./gradlew build --no-daemon --refresh-dependencies
+          ./gradlew -DsparkVersion=3.2 build --no-daemon --refresh-dependencies
+          ./gradlew -DsparkVersion=3.1 build --no-daemon --refresh-dependencies
+      # - name: Deploy Snapshot
+      #   if: github.ref == 'refs/heads/main'
+      #   run: |
+      #     ./gradlew publish --no-daemon --refresh-dependencies
+      #     ./gradlew -DsparkVersion=3.2 publish --no-daemon --refresh-dependencies
+      #     ./gradlew -DsparkVersion=3.1 publish --no-daemon --refresh-dependencies
