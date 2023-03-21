@@ -34,7 +34,7 @@ Notices:
 2. Since GeoTools was published under GPL license, so we cannot bundle GeoTools
    into our extension jar. You need to obtain and add GeoTools jar
    yourself. Please refer to [sedona documentation on
-   GeoTools](https://sedona.apache.org/setup/maven-coordinates/#geotools-240)
+   GeoTools](https://sedona.apache.org/latest-snapshot/setup/maven-coordinates/#geotools-240)
    for detail.
 
 ## Example
