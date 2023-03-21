@@ -25,8 +25,7 @@ repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
 
-    // FIXME: Temporarily use Apache snapshot repository.
-    maven("https://repository.apache.org/content/repositories/snapshots")
+    maven("https://repository.apache.org/content/repositories/releases")
 }
 
 java {
@@ -44,8 +43,7 @@ dependencies {
         // Define dependency versions as constraints
         implementation("org.apache.spark:spark-sql_2.12:${sparkVersion}.0")
         implementation("org.apache.spark:spark-hive_2.12:${sparkVersion}.0")
-        // FIXME: switch to a released version once 1.4.0-incubating was released
-        implementation("org.apache.sedona:sedona-spark-shaded-3.0_2.12:1.3.2-incubating-SNAPSHOT")
+        implementation("org.apache.sedona:sedona-spark-shaded-3.0_2.12:1.4.0")
         implementation("org.datasyslab:geotools-wrapper:1.1.0-25.2")
         implementation("org.apache.iceberg:iceberg-spark-${sparkVersion}_2.12:1.1.0-gd-SNAPSHOT")
         implementation("org.apache.iceberg:iceberg-spark-extensions-${sparkVersion}_2.12:1.1.0-gd-SNAPSHOT")
