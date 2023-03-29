@@ -42,3 +42,13 @@ Notices:
 `example` directory contains an example spark job processing geometries stored
 in iceberg tables using Apache Sedona. Please refer to `example/launch.sh` for
 spark-submit command for launching jobs.
+
+## Build
+
+You can use the following command to build the extension jar with specific spark version by yourself:
+
+```
+./gradlew -DsparkVersion=3.1 build
+```
+
+Currently, we only support Spark 3.1, 3.2 and 3.3.

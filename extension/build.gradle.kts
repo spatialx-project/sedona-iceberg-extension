@@ -33,6 +33,13 @@ configurations {
 
 repositories {
     mavenLocal()
+    maven {
+        url = uri("https://maven.pkg.github.com/spatialx-project/geolake")
+        credentials {
+            username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
+            password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
+        }
+    }
 }
 
 val sparkVersion =
@@ -70,39 +77,39 @@ tasks {
     }
 }
 
-//publishing {
-//    publications {
-//        create<MavenPublication>("maven") {
-//            groupId = "org.apache.iceberg"
-//            versionMapping {
-//                allVariants {
-//                    fromResolutionResult()
-//                }
-//            }
-//            pom {
-//                name.set("Sedona-Iceberg Extension")
-//                description.set("Unleash the power of Apache Sedona when processing Iceberg Tables")
-//                url.set("https://iceberg.apache.org")
-//                licenses {
-//                    license {
-//                        name.set("The Apache License, Version 2.0")
-//                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-//                    }
-//                }
-//            }
-//
-//            repositories {
-//                maven {
-//                    name = "GitHubPackages"
-//                    url = uri("https://maven.pkg.github.com/<USERNAME>/<REPOSITORY>")
-//                    credentials {
-//                        username = "<USERNAME>"
-//                        password = "<TOKEN>"
-//                    }
-//                }
-//            }
-//
-//            from(components["java"])
-//        }
-//    }
-//}
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "org.apache.iceberg"
+            versionMapping {
+                allVariants {
+                    fromResolutionResult()
+                }
+            }
+            pom {
+                name.set("Sedona-Iceberg Extension")
+                description.set("Unleash the power of Apache Sedona when processing Iceberg Tables")
+                url.set("https://iceberg.apache.org")
+                licenses {
+                    license {
+                        name.set("The Apache License, Version 2.0")
+                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                    }
+                }
+            }
+
+            repositories {
+                maven {
+                    name = "GitHubPackages"
+                    url = uri("https://maven.pkg.github.com/spatialx-project/sedona-iceberg-extension")
+                    credentials {
+                        username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
+                        password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
+                    }
+                }
+            }
+
+            from(components["java"])
+        }
+    }
+}

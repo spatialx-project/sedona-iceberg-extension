@@ -26,6 +26,14 @@ repositories {
     mavenCentral()
 
     maven("https://repository.apache.org/content/repositories/releases")
+
+    maven {
+        url = uri("https://maven.pkg.github.com/spatialx-project/geolake")
+        credentials {
+            username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
+            password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
+        }
+    }
 }
 
 java {
@@ -38,6 +46,8 @@ val sparkVersion =
     if (System.getProperty("sparkVersion") != null) System.getProperty("sparkVersion")
     else System.getProperty("defaultSparkVersion")
 
+val geoLakeVersion = "1.1.0-geolake"
+
 dependencies {
     constraints {
         // Define dependency versions as constraints
@@ -45,9 +55,9 @@ dependencies {
         implementation("org.apache.spark:spark-hive_2.12:${sparkVersion}.0")
         implementation("org.apache.sedona:sedona-spark-shaded-3.0_2.12:1.4.0")
         implementation("org.datasyslab:geotools-wrapper:1.1.0-25.2")
-        implementation("org.apache.iceberg:iceberg-spark-${sparkVersion}_2.12:1.1.0-gd-SNAPSHOT")
-        implementation("org.apache.iceberg:iceberg-spark-extensions-${sparkVersion}_2.12:1.1.0-gd-SNAPSHOT")
-        implementation("org.apache.iceberg:iceberg-hive-metastore:1.1.0-gd-SNAPSHOT")
+        implementation("org.apache.iceberg:iceberg-spark-${sparkVersion}_2.12:${geoLakeVersion}")
+        implementation("org.apache.iceberg:iceberg-spark-extensions-${sparkVersion}_2.12:${geoLakeVersion}")
+        implementation("org.apache.iceberg:iceberg-hive-metastore:${geoLakeVersion}")
     }
 
     // Use JUnit Jupiter for testing.
