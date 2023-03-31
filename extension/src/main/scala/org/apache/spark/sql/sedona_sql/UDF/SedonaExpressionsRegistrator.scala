@@ -25,6 +25,8 @@ import org.apache.spark.sql.catalyst.FunctionIdentifier
 import org.apache.spark.sql.catalyst.expressions.ExpressionInfo
 import org.apache.spark.sql.expressions.UserDefinedAggregator
 import org.apache.spark.sql.functions
+import org.apache.spark.sql.functions.udaf
+import org.apache.spark.sql.sedona_sql.UDAF.ST_CENTROID_AGGR
 
 /**
  * Register sedona UDFs and UDAFs using the post-spark-3 approach.
@@ -43,5 +45,11 @@ object SedonaExpressionsRegistrator {
       val udaf = functions.udaf(f).asInstanceOf[UserDefinedAggregator[_, _, _]]
       extensions.injectFunction(functionIdentifier, expressionInfo, udaf.scalaAggregator)
     }
+    val st_centroid_aggr = new ST_CENTROID_AGGR
+    extensions.injectFunction(
+      FunctionIdentifier(st_centroid_aggr.getClass.getSimpleName),
+      new ExpressionInfo(st_centroid_aggr.getClass.getCanonicalName, "ST_Centroid_Aggr"),
+      udaf(st_centroid_aggr).asInstanceOf[UserDefinedAggregator[_, _, _]].scalaAggregator
+    )
   }
 }
