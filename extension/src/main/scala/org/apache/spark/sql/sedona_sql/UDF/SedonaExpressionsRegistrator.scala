@@ -46,9 +46,10 @@ object SedonaExpressionsRegistrator {
       extensions.injectFunction(functionIdentifier, expressionInfo, udaf.scalaAggregator)
     }
     val st_centroid_aggr = new ST_CENTROID_AGGR
+    val functionIdentifier = FunctionIdentifier(st_centroid_aggr.getClass.getSimpleName)
     extensions.injectFunction(
-      FunctionIdentifier(st_centroid_aggr.getClass.getSimpleName),
-      new ExpressionInfo(st_centroid_aggr.getClass.getCanonicalName, "ST_Centroid_Aggr"),
+      functionIdentifier,
+      new ExpressionInfo(st_centroid_aggr.getClass.getCanonicalName, functionIdentifier.funcName),
       udaf(st_centroid_aggr).asInstanceOf[UserDefinedAggregator[_, _, _]].scalaAggregator
     )
   }
